@@ -1,8 +1,11 @@
-console.log("Hello World");
-
 let humanScore = 0;
 let computerScore = 0;
 
+const playerScoreElement = document.getElementById("playerScore");
+const computerScoreElement = document.getElementById("computerScore");
+const winnerElement = document.getElementById("winner");
+
+// Function to get the computer's choice
 function getComputerChoice() {
   const randomChoice = Math.random();
   if (randomChoice < 0.34) {
@@ -14,49 +17,58 @@ function getComputerChoice() {
   }
 }
 
-function getHumanChoice() {
-  const userChoice = prompt("Enter your choice: rock, paper, or scissors").toLowerCase();
-  return userChoice;
-}
-
+// Function to play a single round
 function playRound(humanChoice, computerChoice) {
-  if (humanChoice === computerChoice) {
-    console.log(`It's a tie! Both chose ${humanChoice}`);
-    return;
-  }
+  let result = '';
 
-  if (
+  if (humanChoice === computerChoice) {
+    result = `It's a tie! Both chose ${humanChoice}`;
+  } else if (
     (humanChoice === "rock" && computerChoice === "scissors") ||
     (humanChoice === "paper" && computerChoice === "rock") ||
     (humanChoice === "scissors" && computerChoice === "paper")
   ) {
-    console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+    result = `You win! ${humanChoice} beats ${computerChoice}`;
     humanScore++;
   } else {
-    console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+    result = `You lose! ${computerChoice} beats ${humanChoice}`;
     computerScore++;
   }
-}
 
-function playGame() {
-  for (let i = 0; i < 5; i++) {
-    console.log(`Round ${i + 1}`);
-    
-    const humanChoice = getHumanChoice();
-    const computerChoice = getComputerChoice();
-    
-    playRound(humanChoice, computerChoice);
-  }
+  // Update score and result in the DOM
+  playerScoreElement.textContent = humanScore;
+  computerScoreElement.textContent = computerScore;
+  winnerElement.textContent = result;
 
-  // Declare the final winner
-  if (humanScore > computerScore) {
-    console.log(`You win the game! Final Score: You - ${humanScore}, Computer - ${computerScore}`);
-  } else if (humanScore < computerScore) {
-    console.log(`You lose the game! Final Score: You - ${humanScore}, Computer - ${computerScore}`);
-  } else {
-    console.log(`The game is a tie! Final Score: You - ${humanScore}, Computer - ${computerScore}`);
+  // Announce the winner if any player reaches 5 points
+  if (humanScore === 5) {
+    winnerElement.textContent = "Congratulations! You won the game!";
+    disableButtons();
+  } else if (computerScore === 5) {
+    winnerElement.textContent = "Game Over! Computer wins!";
+    disableButtons();
   }
 }
 
-// Start the game
-playGame();
+// Disable the buttons once the game is over
+function disableButtons() {
+  document.querySelectorAll('.button').forEach(button => {
+    button.disabled = true;
+  });
+}
+
+// Add event listeners to buttons
+document.getElementById("rock").addEventListener("click", () => {
+  const computerChoice = getComputerChoice();
+  playRound("rock", computerChoice);
+});
+
+document.getElementById("paper").addEventListener("click", () => {
+  const computerChoice = getComputerChoice();
+  playRound("paper", computerChoice);
+});
+
+document.getElementById("scissors").addEventListener("click", () => {
+  const computerChoice = getComputerChoice();
+  playRound("scissors", computerChoice);
+});
