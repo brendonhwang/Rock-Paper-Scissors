@@ -20,7 +20,4 @@ A simple implementation of the classic **Rock, Paper, Scissors** game in JavaScr
 - **Score Tracking**: Keeps track of scores for both the human player and the computer over 5 rounds.
 - **Random Computer Choice**: The computer picks randomly between rock, paper, or scissors.
 
----
-
-## Project Structure
 
